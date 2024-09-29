@@ -1,0 +1,34 @@
+{
+    "name": "devweb-tp5",
+    "version": "1.0.0",
+    "description": "Tutoriel HTTP/Express Node.js",
+    "main": "server-http.mjs",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "express-dev": "cross-env NODE_ENV=development nodemon server-express.mjs",
+        "express-prod": "cross-env NODE_ENV=production node server-express.mjs"
+    },
+    "keywords": [],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TooFuW/MUET_Eyrian_CC4.git"
+    },
+    "author": "Eyrian Muet <eyrianmuet@proton.me>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/TooFuW/MUET_Eyrian_CC4/issues"
+    },
+    "homepage": "https://github.com/TooFuW/MUET_Eyrian_CC4#readme",
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "devweb-tp5": "file:",
+        "ejs": "^3.1.10",
+        "express": "^4.21.0",
+        "http-errors": "^2.0.0",
+        "loglevel": "^1.9.2",
+        "morgan": "^1.10.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.7"
+    }
+}
