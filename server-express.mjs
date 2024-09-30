@@ -1,11 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 import createError from "http-errors";
-import logger from "loglevel";
 
 const host = "localhost";
 const port = 8080;
-logger.setLevel(logger.levels.DEBUG);
 
 const app = express();
 
@@ -47,9 +45,9 @@ app.use((error, _request, response, _next) => {
 const server = app.listen(port, host);
 
 server.on("listening", () =>
-    logger.info(
+    console.info(
         `HTTP listening on http://localhost:${server.address().port} with mode '${process.env.NODE_ENV}'`,
     ),
 );
 
-logger.info(`File ${import.meta.url} executed.`);
+console.info(`File ${import.meta.url} executed.`);

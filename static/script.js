@@ -12,5 +12,6 @@ $copyButton.addEventListener('click', function() {
 
     const $copyText = document.createElement("p");
     $copyText.textContent = "Copied !";
+    $copyText.classList.add("copy-text");
     $copyButton.insertAdjacentElement("afterend", $copyText);
 });

@@ -4,13 +4,16 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/style.css"/>
         <script src="/script.js" defer></script>
         <title>MiniLink Generator</title>
     </head>
     <body>
-        <h1 id="title">Generate your own MiniLink !</h1>
-        <div id="white-box">
+        <header>
+            <h1 id="title">Generate your own MiniLink !</h1>
+        </header>
+        <div id="content">
             <form method="post" action="/shortenLink" id="submit-link">
                 <label for="url">Paste your long link here :</label>
                 <input id="input" type="url" name="url" placeholder="https://example.com/my-long-url"/>
@@ -23,5 +26,9 @@
                 <button id="copy" type="button">Copy 📋</button>
             <% } %>
         </div>
+        <footer>
+            <a href="https://github.com/TooFuW" class="fa fa-github"></a>
+            <a href="mailto:eyrianmuet@proton.me" class="fa fa-envelope"></a>
+        </footer>
     </body>
 </html>
