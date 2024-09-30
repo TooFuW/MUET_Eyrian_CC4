@@ -4,23 +4,24 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
-        <link rel="stylesheet" href="/style.css" />
+        <link rel="stylesheet" href="/style.css"/>
+        <script src="/script.js" defer></script>
         <title>MiniLink Generator</title>
     </head>
     <body>
-        <div id="center">
-            <h1 id="title">Generate your own MiniLink !</h1>
-            <div id="white-box">
-                <p>Paste your long link here :</p>
-                <input id="input" type="text" placeholder="https://example.com/my-long-url"/>
+        <h1 id="title">Generate your own MiniLink !</h1>
+        <div id="white-box">
+            <form method="post" action="/shortenLink" id="submit-link">
+                <label for="url">Paste your long link here :</label>
+                <input id="input" type="url" name="url" placeholder="https://example.com/my-long-url"/>
                 <button id="submit">Get your link 🔗</button>
-                <% if (link != null) { %>
-                    <div id="border"></div>
-                    <p>Your short link :</p>
-                    <input id="output" type="text" placeholder="https://example.com/my-short-url" value="<%= link %>" disabled/>
-                    <button id="copy">Copy 📋</button>
-                <% } %>
-            </div>
+            </form>
+            <% if (link != null) { %>
+                <div id="border"></div>
+                <label for="output">Your short link :</label>
+                <input id="output" type="url" name="url" value="<%= link %>" disabled/>
+                <button id="copy" type="button">Copy 📋</button>
+            <% } %>
         </div>
     </body>
 </html>

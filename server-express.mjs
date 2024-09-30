@@ -4,7 +4,7 @@ import createError from "http-errors";
 import logger from "loglevel";
 
 const host = "localhost";
-const port = 8000;
+const port = 8080;
 logger.setLevel(logger.levels.DEBUG);
 
 const app = express();
@@ -14,13 +14,21 @@ if (app.get("env") === "development") app.use(morgan("dev"));
 app.set("view engine", "ejs");
 
 app.use(express.static("static"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get("/", async function (request, response, next) {
     return response.redirect("/accueil");
 });
 
 app.get("/accueil", async function (request, response, next) {
-    return response.render("accueil", { link: null });
+    const link = request.query.link || null;
+    return response.render("accueil", { link });
+});
+
+app.post("/shortenLink", async function (request, response, next) {
+    const link = request.body.url;
+    return response.redirect(`/accueil?link=${encodeURIComponent(link)}`);
 });
 
 app.use((request, response, next) => {
