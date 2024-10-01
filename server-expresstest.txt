@@ -2,14 +2,14 @@ import express from "express";
 import morgan from "morgan";
 import createError from "http-errors";
 import crypto from "crypto";
+import fs from "fs/promises";
+import path from "path";
 
 const host = "localhost";
 const port = 8080;
+const linksFilePath = path.join(__dirname, "links.json");
 
 const app = express();
-
-// A REMPLACER PAR DU JSON
-const urlDatabase = new Map();
 
 if (app.get("env") === "development") app.use(morgan("dev"));
 
@@ -21,6 +21,15 @@ app.use(express.json());
 
 function generateShortId() {
     return crypto.randomBytes(3).toString('hex');
+}
+
+async function readLinksFromFile() {
+    const data = await fs.readFile(linksFilePath);
+    return JSON.parse(data);
+}
+
+async function writeLinksToFile(linksDatabase) {
+    await fs.writeFile(linksFilePath, JSON.stringify(linksDatabase, null, 2));
 }
 
 app.get("/", async function (request, response, next) {
@@ -36,6 +45,11 @@ app.post("/shortenLink", async function (request, response, next) {
     const originalLink = request.body.url;
 
     const shortLink = generateShortId();
+
+    let linksDatabase = {};
+    (async () => {
+        linksDatabase = await readLinksFromFile();
+    })();
 
     urlDatabase.set(shortLink, originalLink);
 
