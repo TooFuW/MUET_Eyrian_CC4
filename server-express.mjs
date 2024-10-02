@@ -2,14 +2,12 @@ import express from "express";
 import morgan from "morgan";
 import createError from "http-errors";
 import crypto from "crypto";
+import fs from "fs/promises";
 
 const host = "localhost";
 const port = 8080;
 
 const app = express();
-
-// A REMPLACER PAR DU JSON
-const urlDatabase = new Map();
 
 if (app.get("env") === "development") app.use(morgan("dev"));
 
@@ -21,6 +19,25 @@ app.use(express.json());
 
 function generateShortId() {
     return crypto.randomBytes(3).toString('hex');
+}
+
+async function readLinksJSON() {
+    try {
+        const data = await fs.readFile("./static/links.json", "utf-8"); 
+        return JSON.parse(data);
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+async function writeLinksJSON(linksJSON) {
+    try {
+        const data = JSON.stringify(linksJSON, null, 4);
+        await fs.writeFile("./static/links.json", data);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 app.get("/", async function (request, response, next) {
@@ -35,20 +52,39 @@ app.get("/accueil", async function (request, response, next) {
 app.post("/shortenLink", async function (request, response, next) {
     const originalLink = request.body.url;
 
-    const shortLink = generateShortId();
+    let linksJSON = await readLinksJSON();
+    let finalLink;
+    let lienExistant = false;
+    for (let key in linksJSON) {
+        if (linksJSON[key] === originalLink) {
+            lienExistant = true;
+            finalLink = key;
+            break;
+        }
+    }
 
-    urlDatabase.set(shortLink, originalLink);
+    if (!lienExistant) {
+        const shortLink = generateShortId();
+        finalLink = `http://${host}:${port}/${shortLink}`;
+        linksJSON[finalLink] = originalLink;
+        await writeLinksJSON(linksJSON);
+    }
 
-    const finalLink = `http://${host}:${port}/${shortLink}`;
     return response.redirect(`/accueil?link=${encodeURIComponent(finalLink)}`);
 });
 
 app.get("/:shortLink", async function (request, response, next) {
     const shortLink = request.params.shortLink;
 
-    const originalLink = urlDatabase.get(shortLink);
-
-    return response.redirect(originalLink);
+    let linksJSON = await readLinksJSON();
+    try {
+        const originalLink = linksJSON[`http://${host}:${port}/${shortLink}`];
+        return response.redirect(originalLink);
+    }
+    catch (error) {
+        console.error(error);
+        return next(createError(404));
+    }
 });
 
 app.use((request, response, next) => {
