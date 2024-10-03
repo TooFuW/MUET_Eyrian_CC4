@@ -17,6 +17,13 @@ app.use(express.static("static"));
 // On utilise express.urlencoded pour traiter les requêtes POST
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.disable("x-powered-by");
+
+// Middleware pour ajouter le header X-API-Version
+app.use((req, res, next) => {
+    res.setHeader('X-API-Version', '1.0.0');
+    next();
+});
 
 // Fonction qui va générer les identifiants courts
 function generateShortId() {
@@ -54,7 +61,8 @@ app.get("/accueil", async function (request, response, next) {
         - Sinon on affichera le lien dans une box en plus en-dessous
     */
     const link = request.query.link;
-    return response.render("accueil", { link });
+    const tailleLinks = Object.keys(await readLinksJSON()).length;
+    return response.render("accueil", { tailleLinks, link });
 });
 
 app.post("/shortenLink", async function (request, response, next) {

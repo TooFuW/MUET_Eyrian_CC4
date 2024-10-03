@@ -30,6 +30,13 @@ header {
     text-align: center;
 }
 
+#title-info {
+    color: white;
+    font-family: Helvetica, sans-serif;
+    font-size: 30px;
+    text-align: center;
+}
+
 #content {
     display: flex;
     flex-direction: column;
@@ -142,6 +149,10 @@ footer {
 @media screen and (max-width: 900px) {
     #title {
         font-size: 50px;
+    }
+
+    #title-info {
+        font-size: 20px;
     }
 
     label, p {
