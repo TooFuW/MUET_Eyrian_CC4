@@ -4,8 +4,7 @@ import createError from "http-errors";
 import crypto from "crypto";
 import fs from "fs/promises";
 
-const host = "localhost";
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 const app = express();
 
@@ -65,7 +64,7 @@ app.post("/shortenLink", async function (request, response, next) {
 
     if (!lienExistant) {
         const shortLink = generateShortId();
-        finalLink = `http://${host}:${port}/${shortLink}`;
+        finalLink = `${request.protocol}://${request.get('host')}/${shortLink}`;
         linksJSON[finalLink] = originalLink;
         await writeLinksJSON(linksJSON);
     }
@@ -78,7 +77,7 @@ app.get("/:shortLink", async function (request, response, next) {
 
     let linksJSON = await readLinksJSON();
     try {
-        const originalLink = linksJSON[`http://${host}:${port}/${shortLink}`];
+        const originalLink = linksJSON[`${request.protocol}://${request.get('host')}/${shortLink}`];
         return response.redirect(originalLink);
     }
     catch (error) {
