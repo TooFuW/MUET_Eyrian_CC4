@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "express-dev": "cross-env NODE_ENV=development nodemon server-express.mjs",
-        "express-prod": "cross-env NODE_ENV=production node server-express.mjs"
+        "express-prod": "cross-env NODE_ENV=production node server-express.mjs",
+        "start": "node server-express.mjs"
     },
     "keywords": [],
     "repository": {
