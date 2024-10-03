@@ -1,8 +1,8 @@
 {
     "name": "devweb-tp5",
     "version": "1.0.0",
-    "description": "Tutoriel HTTP/Express Node.js",
-    "main": "server-http.mjs",
+    "description": "Générateur de raccourcis d'URL",
+    "main": "server-express.mjs",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "express-dev": "cross-env NODE_ENV=development nodemon server-express.mjs",
