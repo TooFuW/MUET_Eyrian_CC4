@@ -95,13 +95,11 @@ app.get("/:shortLink", async function (request, response, next) {
 
     let linksJSON = await readLinksJSON();
     // Si le lien réduit existe on redirige vers la page associée
-    try {
-        const originalLink = linksJSON[`${request.protocol}://${request.get('host')}/${shortLink}`];
-        return response.redirect(originalLink);
-    }
-    //Sinon on retourne une erreur
-    catch (error) {
-        console.error(error);
+    const fullShortLink = `${request.protocol}://${request.get('host')}/${shortLink}`;
+    if (linksJSON[fullShortLink]) {
+        return response.redirect(linksJSON[fullShortLink]);
+    } else {
+        // Si le lien n'existe pas, on génère une erreur 404
         return next(createError(404));
     }
 });

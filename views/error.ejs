@@ -4,15 +4,42 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
-        <link rel="stylesheet" href="/style.css" />
         <title>Tutorial</title>
     </head>
-    <body style="color: white;">
-        <div class="center">
+    <body>
+        <style>
+            body {
+                position: relative;
+                background-image: url("./background.jpg");
+                background-repeat: no-repeat;
+                background-size: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-family: Helvetica, sans-serif;
+            }
+
+            div {
+                background-color: rgba(0, 0, 0);
+                padding: 0px 10px;
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+                text-align: center;
+            }
+
+            pre {
+                background-color: rgba(0, 0, 0);
+                padding: 10px;
+                border-radius: 20px;
+            }
+        </style>
+        <div>
             <h1>Error <%= code %></h1>
             <p><%= message %></p>
         </div>
-        <% if (stack != null) { %>
+        <% if (stack != "") { %>
             <pre><%= stack %></pre>
         <% } %>
     </body>
