@@ -5,6 +5,7 @@ import crypto from "crypto";
 import fs from "fs/promises";
 
 const port = process.env.PORT || 8080;
+const host = "0.0.0.0";
 
 const app = express();
 
@@ -26,7 +27,7 @@ async function readLinksJSON() {
         return JSON.parse(data);
     } catch (error) {
         console.error(error);
-        return [];
+        return {};
     }
 }
 
@@ -79,8 +80,7 @@ app.get("/:shortLink", async function (request, response, next) {
     try {
         const originalLink = linksJSON[`${request.protocol}://${request.get('host')}/${shortLink}`];
         return response.redirect(originalLink);
-    }
-    catch (error) {
+    } catch (error) {
         console.error(error);
         return next(createError(404));
     }
@@ -103,7 +103,7 @@ const server = app.listen(port, host);
 
 server.on("listening", () =>
     console.info(
-        `HTTP listening on http://localhost:${server.address().port} with mode '${process.env.NODE_ENV}'`,
+        `HTTP listening on http://${host}:${port} with mode '${process.env.NODE_ENV}'`,
     ),
 );
 
