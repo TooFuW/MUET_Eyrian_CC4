@@ -66,6 +66,10 @@ app.post("/shortenLink", async function (request, response, next) {
     if (!lienExistant) {
         const shortLink = generateShortId();
         finalLink = `${request.protocol}://${request.get('host')}/${shortLink}`;
+        while (linksJSON[finalLink] === undefined) {
+            shortLink = generateShortId();
+            finalLink = `${request.protocol}://${request.get('host')}/${shortLink}`;
+        }
         linksJSON[finalLink] = originalLink;
         await writeLinksJSON(linksJSON);
     }
