@@ -18,13 +18,13 @@
             <form method="post" action="/shortenLink" id="submit-link">
                 <label for="url">Paste your long link here :</label>
                 <input id="input" type="url" name="url" placeholder="https://example.com/my-long-url"/>
-                <button id="submit">Get your link 🔗</button>
+                <button id="submit" title="Get your link 🔗">Get your link 🔗</button>
             </form>
             <% if (link != null) { %>
                 <div id="border"></div>
                 <label for="output">Your short link :</label>
                 <input id="output" type="url" name="url" value="<%= link %>" disabled/>
-                <button id="copy" type="button">Copy 📋</button>
+                <button id="copy" type="button" title="Copy 📋">Copy 📋</button>
             <% } %>
         </div>
         <footer>
