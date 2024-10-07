@@ -52,6 +52,7 @@ async function writeLinksJSON(linksJSON) {
 }
 
 app.get("/", async function (request, response, next) {
+    // On renvoie vers l'accueil si aucun chemin spécifique n'est donné
     return response.redirect("/accueil");
 });
 
@@ -65,6 +66,13 @@ app.get("/accueil", async function (request, response, next) {
     return response.render("accueil", { tailleLinks, link });
 });
 
+app.get("/links", async function (request, response, next) {
+    // On affiche la page avec tous les liens créés
+    const tailleLinks = Object.keys(await readLinksJSON()).length;
+    const links = await readLinksJSON();
+    return response.render("links", { tailleLinks, links });
+});
+
 app.post("/shortenLink", async function (request, response, next) {
     //Cette partie s'active lorsque l'utilisateur demande à réduire une url avant de renvoyer sur la page d'accueil
     const originalLink = request.body.url;
@@ -74,7 +82,7 @@ app.post("/shortenLink", async function (request, response, next) {
     let lienExistant = false;
     // Si le lien à transformer est déjà associé à un lien réduit on va donner le lien réduit directement au lieu de créer plusieurs liens réduits pour une même url
     for (let key in linksJSON) {
-        if (linksJSON[key] === originalLink) {
+        if (linksJSON[key][0] === originalLink) {
             lienExistant = true;
             finalLink = key;
             break;
@@ -89,7 +97,8 @@ app.post("/shortenLink", async function (request, response, next) {
             shortLink = generateShortId();
             finalLink = `${request.protocol}://${request.get('host')}/${shortLink}`;
         }
-        linksJSON[finalLink] = originalLink;
+        // On enregistre le lien raccourci avec comme valeurs le lien associé, la date et l'heure actuelle
+        linksJSON[finalLink] = [`${originalLink}`, `${new Date().toLocaleString().split(' ')[0]}`, `${new Date().toLocaleString().split(' ')[1]}`];
         await writeLinksJSON(linksJSON);
     }
 
